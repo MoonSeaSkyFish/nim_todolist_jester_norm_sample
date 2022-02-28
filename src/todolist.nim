@@ -9,7 +9,6 @@ routes:
   get "/regist":
     regist(request)
     redirect "/"
-    resp deploy()
   get "/del/@id":
     remove(@"id")
     redirect "/"
