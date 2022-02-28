@@ -9,7 +9,7 @@ proc defaultHtml(content: string): string =
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <title>やることリストかも</title>
+    <title>TODO LIST</title>
   </head>
   <body>
 {(indent(content, 4))}
@@ -20,7 +20,7 @@ proc defaultHtml(content: string): string =
 proc topPage*(tasks: seq[Task]): string =
   let content = fmt"""
 <form action="/regist">
-  <input type="text" name="task" length="26"><button>登録</button>
+  <input type="text" name="task" length="26"><button>Regist</button>
 </form>
 <ul>
 {(block:
