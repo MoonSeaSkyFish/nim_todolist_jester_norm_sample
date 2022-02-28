@@ -11,8 +11,9 @@ func newTask*(task: string = ""): Task =
 
 template modelProc*(dbconn: untyped, statments: untyped): untyped =
   var dbconn = open(DBName, "", "", "")
+  defer:
+    dbconn.close()
   statments
-  dbconn.close
 
 proc initModel*() =
   modelProc(db):
