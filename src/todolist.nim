@@ -1,14 +1,18 @@
 import jester
 import controllers
 
+template response(text: ResponseText) =
+  resp $text
+
+template response(url: RedirectText) =
+  redirect $url
+
 routes:
   get "/":
-    resp top()
+    response top()
   get "/deploy":
-    resp deploy()
+    response deploy()
   get "/regist":
-    regist(request)
-    redirect "/"
+    response regist(request)
   get "/del/@id":
-    remove(@"id")
-    redirect "/"
+    response remove(@"id")

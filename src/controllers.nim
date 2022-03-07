@@ -1,25 +1,32 @@
-import norm/sqlite
 import models
 import views
 import jester
+import strutils
 
-proc top*(): string =
-  var tasks = @[newTask()]
-  modelProc(db):
-    db.selectAll(tasks)
-  result = topPage(tasks)
+type
+  ResponseText* = distinct string
+  RedirectText* = distinct string
 
-proc deploy*(): string =
+proc `$`*(s: ResponseText): string {.borrow.}
+proc `$`*(s: RedirectText): string {.borrow.}
+
+proc top*(): ResponseText =
+  ResponseText(topPage(getTaskAll()))
+
+proc deploy*(): ResponseText =
   initModel()
-  result = messagePage("sucess create table")
+  ResponseText(messagePage("sucess create table"))
 
-proc regist*(request: Request) =
-  var tasks = [newTask(request.params["task"])]
-  modelProc(db):
-    db.insert(tasks)
+proc regist*(request: Request): RedirectText =
+  addTask(request.params["task"])
+  RedirectText("/")
 
-proc remove*(id: string) =
-  var tasks = @[newTask()]
-  modelProc(db):
-    db.select(tasks, "id = ?", id)
-    db.delete(tasks)
+proc remove*(id: string): RedirectText =
+  try:
+    let id = parseInt(id)
+    delTask(id)
+  except:
+    discard
+  RedirectText("/")
+
+

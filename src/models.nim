@@ -19,3 +19,18 @@ proc initModel*() =
   modelProc(db):
     db.createTables(newTask())
 
+proc getTaskAll*(): seq[Task] =
+  result = @[newTask()]
+  modelProc(db):
+    db.selectAll(result)
+
+proc addTask*(taskText: string) =
+  var task = newTask(taskText)
+  modelProc(db):
+    db.insert(task)
+
+proc delTask*(taskId: int) =
+  var task = newTask()
+  modelProc(db):
+    db.select(task, "id = ?", taskId)
+    db.delete(task)
